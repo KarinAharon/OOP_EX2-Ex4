@@ -10,8 +10,8 @@ import Geom.Point3D;
 public class MyCoords implements coords_converter {
 	
 	//http://cosinekitty.com/compass.html - checking azimut function
-	//https://www.omnicalculator.com/other/azimuth - נוסחאות לאזימוט
-	//http://tchester.org/sgm/analysis/peaks/how_to_get_view_params.html - נוסחאות לגובה
+	//https://www.omnicalculator.com/other/azimuth - Azimuth formulas
+	//http://tchester.org/sgm/analysis/peaks/how_to_get_view_params.html - hight formulas
 
 	private int radius_earth = 6371000;
 
@@ -105,47 +105,6 @@ public class MyCoords implements coords_converter {
 			return true;
 
 		return false;
-	}
-
-	public static void main(String[] args) {
-
-		MyCoords c = new MyCoords();
-
-		Point3D v1 = new Point3D (32.10332, 35.20904, 670);
-		Point3D v2 = new Point3D (32.10635, 35.20523, 650); 
-
-		System.out.println("dis " +c.distance3d(v1, v2));
-		System.out.println(c.vector3D(v1, v2));
-
-		Point3D v3 = new Point3D(337.69899206128815, -359.2492067337923,-20.0);
-		Point3D gps = new Point3D(32.103315 ,35.209039, 670.0);
-		//Point3D gps = new Point3D(32.106352 ,35.205225, 650.0);
-		//System.out.println("jjjj"+c.add(gps, v3));
-
-		Point3D a = new Point3D(32.10332, 35.20904, 670);
-		Point3D b = new Point3D(32.10635, 35.20523, 650); 
-		//Point3D a = new Point3D(37.67094,45.798875,600);
-		//Point3D b = new Point3D(47.98654,81.76948,200);
-		//Point3D a = new Point3D(35.103,31.209);
-		//Point3D b = new Point3D(33.105,29.205);
-		double [] azi = c.azimuth_elevation_dist(a, b);
-		System.out.println(Arrays.toString(azi));
-		
-		Point3D v4 = new Point3D (87,120,670);
-		Point3D v5 = new Point3D (32,170,650);
-		//System.out.println("distance " +c.distance3d(v4, v5));
-		
-		  Point3D p1=new Point3D(32.103315,35.209039,670);
-	      Point3D p2 =new Point3D(32.106352,35.205225,650);
-	      double [] azi2 = c.azimuth_elevation_dist(p1, p2);
-	      
-			System.out.println(Arrays.toString(azi2));
-			//Point3D o1= new Point3D (32.103315,35.209039,670);
-			//Point3D o2= new Point3D (-90.5,150,600);
-			//System.out.println(c.isValid_GPS_Point(o1));
-			//System.out.println(c.isValid_GPS_Point(o2));
-			
-
 	}
 
 }
