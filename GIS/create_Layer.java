@@ -16,9 +16,10 @@ import File_format.Csv2kml;
 import Geom.Point3D;
 
 public class create_Layer {
+	static int count=0;
 
 
-	public GIS_layer csv2layer(String csvFile) throws Exception {
+	public static GIS_layer csv2layer(String csvFile) throws Exception {
 
 		ArrayList<String[]>data = new ArrayList<>();
 		String line = "";
@@ -53,11 +54,9 @@ public class create_Layer {
 		return layer;
 	}
 
-	public void layer2kml(GIS_layer layer) {
-		int count=0;
+	public static void layer2kml(GIS_layer layer) {
 		try {
-			System.out.println("aa");
-			PrintWriter writer = new PrintWriter(new File("OutPut2 "+count+++".kml"));
+			PrintWriter writer = new PrintWriter(new File("OutPut2 "+(int)count+++".kml"));
 			StringBuilder sb = new StringBuilder();
 			sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
 					"<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n <Document> <Folder><name>Wifi Networks</name>\n");
