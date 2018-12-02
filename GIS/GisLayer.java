@@ -8,9 +8,15 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class GisLayer implements GIS_layer {
+	/**
+	 * The variables of the class
+	 */
 	Set<GIS_element> s = new HashSet<>();
 	private long creationTime;
 	
+	/**
+	 * Initialize constructor
+	 */
 	 public GisLayer() {
 		 
 		this.creationTime = System.currentTimeMillis();
@@ -55,7 +61,7 @@ public class GisLayer implements GIS_layer {
 
 	@Override
 	public Iterator<GIS_element> iterator() {
-		// TODO Auto-generated method stub
+		
 		return s.iterator();
 	}
 
@@ -95,6 +101,9 @@ public class GisLayer implements GIS_layer {
 		return s.toArray(arg0);
 	}
 
+	/**
+	 * This function return the data
+	 */
 	@Override
 	public Meta_data get_Meta_data() {
 		

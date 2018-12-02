@@ -15,10 +15,24 @@ import Algoritmim.MultiCSV;
 import File_format.Csv2kml;
 import Geom.Point3D;
 
+/**
+ * This class create layer from a csv file and also create a kml file from the layer.
+ * @author Mor Danino and Karin Aharon
+ *
+ */
 public class create_Layer {
+	/**
+	 * The variable of the class
+	 */
 	static int count=0;
 
 
+	/**
+	 * This function received a string of csv file and create a layer from the data of the file.
+	 * @param csvFile the name of the csv file
+	 * @return layer
+	 * @throws Exception
+	 */
 	public static GIS_layer csv2layer(String csvFile) throws Exception {
 
 		ArrayList<String[]>data = new ArrayList<>();
@@ -54,6 +68,10 @@ public class create_Layer {
 		return layer;
 	}
 
+	/**
+	 * This function received a layer and create a kml file from it data.
+	 * @param layer any layer
+	 */
 	public static void layer2kml(GIS_layer layer) {
 		try {
 			PrintWriter writer = new PrintWriter(new File("OutPut2 "+(int)count+++".kml"));

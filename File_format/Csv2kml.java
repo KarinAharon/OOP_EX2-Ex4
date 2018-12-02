@@ -14,9 +14,17 @@ import GIS.GisElement;
 import GIS.MetaData;
 import Geom.Point3D;
 
+/**
+ * This class make a kml file from csv file. 
+ * @author Mor Danino and Karin Aharon
+ *
+ */
 public class Csv2kml {
 
-	
+	/**
+	 * This function received a csv file and keep the data of every element in layer.
+	 * @param csvFile the csv file
+	 */
 	public static void readFile(String csvFile) {
 		
 		ArrayList<String[]>data = new ArrayList<>();
@@ -54,6 +62,11 @@ public class Csv2kml {
 		writeFileKML(data);
 		
 	}
+	
+	/**
+	 * This function received array list of array of string and (the data of the csv file) and make a kml file.
+	 * @param data data of the csv file
+	 */
 	public static void writeFileKML(ArrayList<String[]> data) {
 		
 		ArrayList<String> content = new ArrayList<String>();
