@@ -29,7 +29,7 @@ import Geom.Point3D;
 import Algoritmim.*;
 
 public class MyFrame extends JFrame implements MouseListener {
-	
+
 	// private variables
 	private Container window;
 	private JPanel _panel;
@@ -41,6 +41,7 @@ public class MyFrame extends JFrame implements MouseListener {
 	private ImageIcon imgBck;
 	private int counter = -1;
 	private int counter2 = -1;
+	private ArrayList<Fruit> fruits=new ArrayList();
 
 	public MyFrame(){
 		super("Map Demo"); //setTitle("Map Counter");  // "super" Frame sets its title
@@ -112,7 +113,7 @@ public class MyFrame extends JFrame implements MouseListener {
 		menuItem4.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-		
+
 				isGamer = 4;
 				paintElement();
 			}});
@@ -125,7 +126,7 @@ public class MyFrame extends JFrame implements MouseListener {
 				isGamer = 5;
 				paintElement();
 			}});
-		
+
 		menuItem6 = new JMenuItem("Save", KeyEvent.VK_F);
 		menu2.add(menuItem6); // the menu adds this item
 		menuItem6.addActionListener(new ActionListener() {
@@ -140,7 +141,7 @@ public class MyFrame extends JFrame implements MouseListener {
 
 		//		// Prepare an ImageIcon
 		String imgMapFilename = "Ariel1.png";    
-		 imgBck = new ImageIcon(getClass().getResource(imgMapFilename));
+		imgBck = new ImageIcon(getClass().getResource(imgMapFilename));
 		JLabel labelMap = new JLabel();
 		labelMap.setIcon(imgBck);
 		_panel.add(labelMap);
@@ -151,10 +152,10 @@ public class MyFrame extends JFrame implements MouseListener {
 	}
 
 	public void PaintAgain() {
-	isGamer = 3;
-	paintElement();
-}
-	
+		isGamer = 3;
+		paintElement();
+	}
+
 	protected void paintElement() {
 		//	The method getGraphics is called to obtain a Graphics object
 		_paper = _panel.getGraphics();
@@ -162,7 +163,6 @@ public class MyFrame extends JFrame implements MouseListener {
 		if(isGamer==1){
 			Packmen p = new Packmen(x,y);
 			p.setId(counter);
-			System.out.println(p.getId());
 			game.packmen_list.add(p);
 
 			Iterator<Packmen> packmen = game.packmen_list.iterator();
@@ -175,11 +175,12 @@ public class MyFrame extends JFrame implements MouseListener {
 				_paper.drawString("("+Integer.toString((int)p.getPoint3D().x())+", "+Integer.toString((int)p.getPoint3D().y())+")",(int)p.getPoint3D().x(),(int)p.getPoint3D().y()-10);
 
 			} }
-		
+
 		if(isGamer==2){ 
 			Fruit f = new Fruit(x,y);
 			f.setId(counter2);
 			game.fruit_list.add(f);
+			fruits.add(f);
 
 			Iterator<Fruit> fruit = game.fruit_list.iterator();
 			while(fruit.hasNext()) {
@@ -189,68 +190,81 @@ public class MyFrame extends JFrame implements MouseListener {
 				_paper.setFont(new Font("Monospaced", Font.PLAIN, 14));               
 				_paper.drawString("("+Integer.toString((int)f.getPoint3D().x())+", "+Integer.toString((int)f.getPoint3D().y())+")",(int)f.getPoint3D().x(),(int)f.getPoint3D().y()-10);
 			}}
-		
+
 		if(isGamer==3){ 
-			
+
+			ArrayList<Fruit> ff = game.fruit_list;
+
+			Iterator<Fruit> fruit = ff.iterator();
+			while(fruit.hasNext()) {
+				Fruit f = fruit.next();
+				_paper.setColor(Color.RED);
+				_paper.fillOval((int)f.getPoint3D().x(),(int)f.getPoint3D().y(),10,10);
+				_paper.setFont(new Font("Monospaced", Font.PLAIN, 14));               
+				_paper.drawString("("+Integer.toString((int)f.getPoint3D().x())+", "+Integer.toString((int)f.getPoint3D().y())+")",(int)f.getPoint3D().x(),(int)f.getPoint3D().y()-10);
+
+			}
+			Iterator<Packmen>it2 = game.packmen_list.iterator();
+
+			while (it2.hasNext() ) {
+				Packmen p = it2.next();
+				_paper.setColor(Color.YELLOW);
+				_paper.fillOval((int)p.getPoint3D().x(),(int)p.getPoint3D().y(),10,10);
+				_paper.setFont(new Font("Monospaced", Font.PLAIN, 14));               
+				_paper.drawString("("+Integer.toString((int)p.getPoint3D().x())+", "+Integer.toString((int)p.getPoint3D().y())+")",(int)p.getPoint3D().x(),(int)p.getPoint3D().y()-10);
+
+			}
 			ShortestPathAlgo sp2 =new ShortestPathAlgo(this.game);
 			Iterator<Path> it_path = sp2.AllPath.iterator();	
 			while(it_path.hasNext()) {
-				
+
 				Path p = it_path.next();
-				 myThread mt = new myThread(p.fruits);
-					for(int j =0;j<p.fruits.size();j++) {
-						if(!p.fruits.isEmpty()) {
-							p.packmen.setPac_place(p.fruits.get(j).getPoint3D());
-							//_paper.setColor(Color.yellow);
-							
-							_paper.fillOval((int)p.packmen.getPoint3D().x(),(int)p.packmen.getPoint3D().y(),10,10);
-							_paper.setFont(new Font("Monospaced", Font.PLAIN, 14));               
-							_paper.drawString("("+Integer.toString((int)p.packmen.getPoint3D().x())+", "+Integer.toString((int)p.packmen.getPoint3D().y())+")",
-									(int)p.packmen.getPoint3D().x(),(int)p.packmen.getPoint3D().y()-10);
-							
-						}
+				System.out.println("The packmen path is:\n " +p);
+				myThread mt = new myThread(p.fruits,this,p.packmen);
+				mt.start();
+				for(int j =0;j<p.fruits.size();j++) {
+					if(!p.fruits.isEmpty()) {
+						p.packmen.setPac_place(p.fruits.get(j).getPoint3D());
+
+
 					}
-					try {
-						mt.run();
-						mt.sleep(5000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-						}
-			System.out.println("bye");
+				}
+
+			}
 		}
 		if(isGamer==4) {
 			ShortestPathAlgo sp =new ShortestPathAlgo(this.game);
 			Iterator<Path> it_path = sp.AllPath.iterator();
-			
+
 			while(it_path.hasNext()) {
 				Path p = it_path.next();	
-					for(int j =0;j<p.fruits.size()-1;j++) {
-						if(!p.fruits.isEmpty()) {
-				Point3D p1 = p.fruits.get(j).getPoint3D();	
-				Point3D p2 = p.fruits.get(j+1).getPoint3D();
-				_paper.setColor(Color.BLUE);
-				_paper.drawLine((int)p1.x(),(int) p1.y(),(int) p2.x(), (int)p2.y());
-						}
-					}}
+				for(int j =0;j<p.fruits.size()-1;j++) {
+					if(!p.fruits.isEmpty()) {
+						Point3D p1 = p.fruits.get(j).getPoint3D();	
+						Point3D p2 = p.fruits.get(j+1).getPoint3D();
+						_paper.setColor(Color.BLUE);
+						_paper.drawLine((int)p1.x(),(int) p1.y(),(int) p2.x(), (int)p2.y());
+					}
+				}}
 		}
-		
+
 		if(isGamer==5) {
 
 			JButton open = new JButton();
 			JFileChooser chooser = new JFileChooser();
-		    chooser.setApproveButtonText("CSVfile");
-		    int result = chooser.showOpenDialog(null);
-		    if(result == JFileChooser.APPROVE_OPTION){
-		        File selection = chooser.getSelectedFile();
-		        Game game1 = new Game(selection.getAbsolutePath());
-		        game.setFruit_list(game1.fruit_list);
-		        game.setPackmen_list(game1.packmen_list);
-		        
-		        ArrayList<Fruit> ff = game.fruit_list;
+			chooser.setApproveButtonText("CSVfile");
+			int result = chooser.showOpenDialog(null);
+			if(result == JFileChooser.APPROVE_OPTION){
+				File selection = chooser.getSelectedFile();
+				Game game1 = new Game(selection.getAbsolutePath());
+				game.setFruit_list(game1.fruit_list);
+				game.setPackmen_list(game1.packmen_list);
 
-		        Iterator<Fruit> fruit = ff.iterator();
+				ArrayList<Fruit> ff = game.fruit_list;
+				fruits=game1.fruit_list2;
+
+
+				Iterator<Fruit> fruit = ff.iterator();
 				while(fruit.hasNext()) {
 					Fruit f = fruit.next();
 					_paper.setColor(Color.RED);
@@ -259,56 +273,38 @@ public class MyFrame extends JFrame implements MouseListener {
 					_paper.drawString("("+Integer.toString((int)f.getPoint3D().x())+", "+Integer.toString((int)f.getPoint3D().y())+")",(int)f.getPoint3D().x(),(int)f.getPoint3D().y()-10);
 
 				}
-					Iterator<Packmen>it2 = game.packmen_list.iterator();
-					System.out.println(game.packmen_list.size());
-					while (it2.hasNext() ) {
-						Packmen p = it2.next();
-						_paper.setColor(Color.YELLOW);
-						_paper.fillOval((int)p.getPoint3D().x(),(int)p.getPoint3D().y(),10,10);
-						_paper.setFont(new Font("Monospaced", Font.PLAIN, 14));               
-						_paper.drawString("("+Integer.toString((int)p.getPoint3D().x())+", "+Integer.toString((int)p.getPoint3D().y())+")",(int)p.getPoint3D().x(),(int)p.getPoint3D().y()-10);
+				Iterator<Packmen>it2 = game.packmen_list.iterator();
 
-					}}
-			
-		    }
-		
-					
-					
+				while (it2.hasNext() ) {
+					Packmen p = it2.next();
+					_paper.setColor(Color.YELLOW);
+					_paper.fillOval((int)p.getPoint3D().x(),(int)p.getPoint3D().y(),10,10);
+					_paper.setFont(new Font("Monospaced", Font.PLAIN, 14));               
+					_paper.drawString("("+Integer.toString((int)p.getPoint3D().x())+", "+Integer.toString((int)p.getPoint3D().y())+")",(int)p.getPoint3D().x(),(int)p.getPoint3D().y()-10);
+
+				}}
+
+		}
+
+
+
 		if(isGamer==6) {
-			 FileDialog fd = new FileDialog(this, "Save the text file", FileDialog.SAVE);
-		        fd.setFile("*.csv");
-		        fd.setFilenameFilter(new FilenameFilter() {
-		            @Override
-		            public boolean accept(File dir, String name) {
-		                return name.endsWith(".csv");
-		            }
-		        });
-		        fd.setVisible(true);
-		        String folder = fd.getDirectory();
-		      //  String fileName = fd.getFile();
-		        try {
-		            FileWriter fw = new FileWriter(folder);
-		            PrintWriter outs = new PrintWriter(fw);
-                    Game game2 = new Game();
-                    game2.write2csv(game2);
-		            outs.close();
-		            fw.close();
-		        } catch (IOException ex) {
-		            System.out.print("Error writing file  " + ex);
-		        }
+
+			game.write2csv(game);
+
 
 		}
 	}
-	//	public void mouseClicked(MouseEvent event){
 	@Override
 	public void mousePressed(MouseEvent event) {
+
 		if(isGamer==1) {
 			x = event.getX();
 			y = event.getY();
 			System.out.println("mouse Clicked");
 			System.out.println("("+ event.getX() + "," + event.getY() +")");
 			counter++;
-			
+
 			paintElement();
 		}
 		if(isGamer==2) {
@@ -317,11 +313,47 @@ public class MyFrame extends JFrame implements MouseListener {
 			System.out.println("mouse Clicked");
 			System.out.println("("+ event.getX() + "," + event.getY() +")");
 			counter2++;
-			
+
 			paintElement();
 
-	}}
-	
+		}}
+
+	@Override
+	public void paint(Graphics arg0) {
+
+		super.paint(arg0);
+		Game game2 = new Game();
+		for(int i =0; i<game.fruit_list.size(); i++) {
+			game2.fruit_list.add(game.fruit_list.get(i));
+		}
+		for(int i =0; i<game.packmen_list.size(); i++) {
+			game2.packmen_list.add(game.packmen_list.get(i));
+		}
+
+		ArrayList<Fruit> ff = fruits;
+
+		Iterator<Fruit> fruit = fruits.iterator();
+		while(fruit.hasNext()) {
+			Fruit f = fruit.next();
+			_paper.setColor(Color.RED);
+			_paper.fillOval((int)f.getPoint3D().x(),(int)f.getPoint3D().y(),10,10);
+			_paper.setFont(new Font("Monospaced", Font.PLAIN, 14));               
+			_paper.drawString("("+Integer.toString((int)f.getPoint3D().x())+", "+Integer.toString((int)f.getPoint3D().y())+")",(int)f.getPoint3D().x(),(int)f.getPoint3D().y()-10);
+
+		}
+		Iterator<Packmen>it2 = game.packmen_list.iterator();
+
+		while (it2.hasNext() ) {
+			Packmen p = it2.next();
+			_paper.setColor(Color.YELLOW);
+			_paper.fillOval((int)p.getPoint3D().x(),(int)p.getPoint3D().y(),10,10);
+			_paper.setFont(new Font("Monospaced", Font.PLAIN, 14));               
+			_paper.drawString("("+Integer.toString((int)p.getPoint3D().x())+", "+Integer.toString((int)p.getPoint3D().y())+")",(int)p.getPoint3D().x(),(int)p.getPoint3D().y()-10);
+
+		}
+
+	}
+
 	// Not Used, but need to provide an empty body for compilation
 	public void mouseReleased(MouseEvent event){}
 	public void mouseClicked(MouseEvent event){}
@@ -332,18 +364,21 @@ public class MyFrame extends JFrame implements MouseListener {
 
 		MyFrame mf = new MyFrame();
 		ArrayList<Fruit> p = new ArrayList() ;
+		Packmen packmen;
 
-		public myThread(ArrayList path_packmen) {
+		public myThread(ArrayList path_packmen,MyFrame mf, Packmen pack) {
+			packmen = pack;
 			this.p = path_packmen;
+			this.mf=mf;
 		}
-		
+
 		@Override
 		public void run() {
 			for(int i = 0; i<p.size(); i++) {
-				p.get(i).getPoint3D();
-				//mf.PaintAgain();
+				packmen.setPac_place(p.get(i).getPoint3D());
+				mf.repaint();
 				try {
-					sleep(5000);
+					sleep(1000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -351,7 +386,7 @@ public class MyFrame extends JFrame implements MouseListener {
 			}
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		MyFrame frame = new MyFrame();
 		frame.setBounds(0, 0, 1433, 642);

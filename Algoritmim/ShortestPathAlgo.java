@@ -16,7 +16,7 @@ import GIS.timeToeat;
 import GUI.MyFrame;
 import Geom.Point3D;
 
-public class ShortestPathAlgo extends Thread{
+public class ShortestPathAlgo  {
 	/**
 	 * the variables of the class
 	 */
@@ -26,7 +26,7 @@ public class ShortestPathAlgo extends Thread{
 	/**
 	 * constructor
 	 */
-	public ShortestPathAlgo() {
+	public ShortestPathAlgo(MyFrame m) {
 
 		AllPath = new ArrayList<Path>();
 	}
@@ -50,6 +50,7 @@ public class ShortestPathAlgo extends Thread{
 		ImageIcon imgBck = new ImageIcon(imgMapFilename);
 		Map m = new Map(imgBck.getIconWidth(),imgBck.getIconHeight());
 
+		
 		while(j<AllPath.size()) {
 			Fruit f_new = new Fruit(game.packmen_list.get(j).getPoint3D(), 1, j, "P");
 			AllPath.get(j).fruits.add(f_new);
@@ -91,7 +92,7 @@ public class ShortestPathAlgo extends Thread{
 					n = t;
 				}	
 			}
-
+			
 			for(int u = 0; u<game.fruit_list.size(); u++) {
 				if(game.fruit_list.get(u).getId() == list.get(n).getFruit().getId()) {
 					AllPath.get(n).fruits.add(game.fruit_list.get(u));
@@ -108,7 +109,7 @@ public class ShortestPathAlgo extends Thread{
 		}
 		
 		for (int i =0 ; i<AllPath.size();i++) {
-			myThread t = new myThread(AllPath.get(i).fruits);
+//			myThread t = new myThread(AllPath.get(i).fruits);
 		}
 
 	}
@@ -139,18 +140,21 @@ public class ShortestPathAlgo extends Thread{
 	
 	public class myThread extends Thread{
 
-		MyFrame mf = new MyFrame();
+	MyFrame mf = new MyFrame();
 		ArrayList<Fruit> p = new ArrayList() ;
+		Packmen packmen;
 
-		public myThread(ArrayList path_packmen) {
+		public myThread(ArrayList path_packmen,MyFrame mf, Packmen pack) {
+			 packmen = pack;
 			this.p = path_packmen;
+			this.mf=mf;
 		}
 		
 		@Override
 		public void run() {
 			for(int i = 0; i<p.size(); i++) {
-				p.get(i).getPoint3D();
-				mf.PaintAgain();
+				packmen.setPac_place(p.get(i).getPoint3D());
+				//mf.PaintAgain();
 				try {
 					sleep(5000);
 				} catch (InterruptedException e) {

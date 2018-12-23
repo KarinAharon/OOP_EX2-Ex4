@@ -24,6 +24,7 @@ public class Game {
   * the variables of the class
   */
 	public ArrayList<Fruit> fruit_list=new ArrayList<>();
+	public ArrayList<Fruit> fruit_list2=new ArrayList<>();
 	public ArrayList<Packmen> packmen_list=new ArrayList<>();
 
 /**
@@ -82,11 +83,13 @@ public class Game {
 							Integer.parseInt(csv[1]),
 							csv[0]);
 					fruit_list.add(f);
+					fruit_list2.add(f);
+					
 				}
 
 			}
-			System.out.println(packmen_list.size());
-			System.out.println(fruit_list.size());
+			System.out.println("Packmen list size: "+packmen_list.size());
+			System.out.println("Fruits list size: "+fruit_list.size());
 
 		}catch (Exception e) {
 		}	
@@ -133,7 +136,6 @@ public class Game {
 					" Alt: "+this.fruit_list.get(j).f_place.z()+
 					" Weight: "+this.fruit_list.get(j).weight+"\n";
 		}
-		//System.out.println(k);
 		return s1;
 	}
 	
