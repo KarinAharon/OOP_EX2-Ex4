@@ -16,6 +16,7 @@ public class GisElement implements GIS_element {
 	 * @param data ant data
 	 * @param geom any geom 
 	 */
+
 	public GisElement(MetaData data, Geom_element geom) {
 		this.data = data;
 		this.geom=geom;

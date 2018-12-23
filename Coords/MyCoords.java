@@ -65,9 +65,7 @@ public class MyCoords implements coords_converter {
 		if (dis>100000)
 
 		{
-			try {
-				throw new Exception("The distance is over more 100 km ");
-			} catch (Exception e) {e.printStackTrace();}	
+			
 		}
 
 		return dis;
