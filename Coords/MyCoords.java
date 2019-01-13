@@ -126,7 +126,7 @@ public class MyCoords implements coords_converter {
 	}
 
 	/**
-	 * This function return true if this point is a valid lat, lon , lat coordinat
+	 * This function return true if this point is a valid lat, lon , lat coordinate
 	 */
 	@Override
 	public boolean isValid_GPS_Point(Point3D p) {

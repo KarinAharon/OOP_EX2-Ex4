@@ -5,18 +5,39 @@ import java.util.Iterator;
 
 import Geom.Point3D;
 
+/**
+ * This class represent a edge
+ */
 public class Edge {
 
+	/**
+	 * the variable of the class
+	 */
 	Line line;
-	//ArrayList<Box> list_point = new ArrayList<>();
-	
+
+	/**
+	 * constructor which received 2 points
+	 * @param p1 the first point
+	 * @param p2 the second point
+	 */
 	public Edge(Point3D p1, Point3D p2) {
 		
 		this.line = new Line(p1, p2);
 	}
 	
-	//יצירת צלעות של הבוקסים
-	
+	public Line getLine() {
+		return line;
+	}
+
+	public void setLine(Line line1) {
+		this.line = line1;
+	}
+
+	/**
+	 * this function received array list of boxes and create a edges
+	 * @param list array list of boxes
+	 * @return array list of edges
+	 */
 	public ArrayList<Line> list_line(ArrayList<Box> list) {
 		ArrayList<Line> new_list = new ArrayList<>();
 		Iterator<Box>it_list = list.iterator();
@@ -36,8 +57,13 @@ public class Edge {
 		return new_list;
 	}
 	
-	// מקבלת רשימה של קווים וקו מוסים ובודקת האם הוא נתתך איתם
-	
+	/**
+	 * this function received array list of lines and checks if the lines are intersect, if not 
+	 * it create from then edges and add them to array list of edges
+	 * @param list_line any array list of lines
+	 * @param l2 any line
+	 * @return array list of edges
+	 */
 	public ArrayList<Edge> list_line(ArrayList<Line> list_line,Line l2) {
 		ArrayList<Edge> new_list = new ArrayList<>();
 		Iterator<Line>it_list = list_line.iterator();

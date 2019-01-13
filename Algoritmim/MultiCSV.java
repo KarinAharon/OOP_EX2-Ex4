@@ -84,7 +84,7 @@ public class MultiCSV {
 
 
 	/**
-	 * This function recived a project and send its layers to the
+	 * This function received a project and send its layers to the
 	 * function layer2kml which make any layer to a kml file.
 	 * @param project any project
 	 */

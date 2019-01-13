@@ -33,7 +33,6 @@ public Packmen () {
 }
 /**
  * getters and setters for the variables that describe the packmen
- * @return radius
  */
 	public int getRadius() {
 		return radius;

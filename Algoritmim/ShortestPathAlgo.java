@@ -109,13 +109,12 @@ public class ShortestPathAlgo  {
 		}
 		
 		for (int i =0 ; i<AllPath.size();i++) {
-//			myThread t = new myThread(AllPath.get(i).fruits);
 		}
 
 	}
 
 	/**
-	 * function that calcaluate the minimum time and return array that contain the minimum time
+	 * function that calculate the minimum time and return array that contain the minimum time
 	 * and the number of the packmen that eat the fruit in the minimum time
 	 * @param arr arr that contain the times that took to every packmen to eat some fruit
 	 * @return array that contain the minimum time and the number of the packmen that eat the fruit in this time
@@ -154,7 +153,6 @@ public class ShortestPathAlgo  {
 		public void run() {
 			for(int i = 0; i<p.size(); i++) {
 				packmen.setPac_place(p.get(i).getPoint3D());
-				//mf.PaintAgain();
 				try {
 					sleep(5000);
 				} catch (InterruptedException e) {

@@ -6,6 +6,11 @@ package File_format;
 	import java.sql.SQLException;
 	import java.sql.Statement;
 
+	/**
+	 * This class read the information from the data base and calculate the average of the points of all students.
+	 * @author Mor Danino and Karin Aharon
+	 *
+	 */
 	public class MySql {
 		
 		public static void main(String[] args)
@@ -25,9 +30,12 @@ package File_format;
 				//select data
 				String allCustomersQuery = "SELECT * FROM logs;";
 				ResultSet resultSet = statement.executeQuery(allCustomersQuery);
+				
 				double our_sum = 0;
 				double sum = 0;
 				int i = 0;
+				
+				// summing up the all points that accumulated
 				while(resultSet.next())
 				{
 					if((resultSet.getInt("FirstID")==205443583) && (resultSet.getInt("SecondID")==312502537)) {
@@ -36,11 +44,13 @@ package File_format;
 					}
 					
 					else {
+						//if(resultSet.getf)
 						sum = sum + resultSet.getDouble("Point");
 						i++;
 					}
 				}
 				
+				// calculate the average of the points of all students and print it.
 				double average = (sum+our_sum)/i;
 				System.out.println("The average is: "+average);
 				resultSet.close();		

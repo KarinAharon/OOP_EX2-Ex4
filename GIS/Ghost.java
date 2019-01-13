@@ -2,14 +2,25 @@ package GIS;
 
 import Geom.Point3D;
 
+/**
+ * This class represent a ghost
+ */
+
 public class Ghost {
 
+	/**
+	 * the variables of the class
+	 */
+	
 	double speed;
 	public Point3D Ghost_location;
 	int radius;
 	int id;
 	String type= "";
 
+	/**
+	 * constructor
+	 */
 	public Ghost() {
 
 		this.speed = 10;
@@ -20,6 +31,14 @@ public class Ghost {
 
 	}
 
+	/**
+	 * Initialize constructor
+	 * @param speed any speed
+	 * @param Ghost_location the point which the ghost located
+	 * @param radius any radios
+	 * @param id any id
+	 * @param type the type G
+	 */
 	public Ghost(double speed,Point3D Ghost_location,int radius,int id,String type) {
 
 		this.speed = speed;
@@ -28,6 +47,10 @@ public class Ghost {
 		this.id = 0;
 		this.type = "G";
 	}
+	
+	/**
+	 * getters and setters
+	 */
 	public double getSpeed() {
 		return speed;
 	}

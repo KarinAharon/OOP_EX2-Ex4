@@ -51,7 +51,8 @@ public class MyFrame extends JFrame implements MouseListener {
 	private static Play play;
 	private ArrayList<Fruit> fruits=new ArrayList();
 	private double angle = 0;
-	
+	private Algo algo = new Algo();
+
 
 	public MyFrame(){
 		super("Map Demo"); //setTitle("Map Counter");  // "super" Frame sets its title
@@ -84,6 +85,7 @@ public class MyFrame extends JFrame implements MouseListener {
 		menuBar = new JMenuBar();
 
 		// First Menu
+		//add buttons
 		menu = new JMenu("Add");
 		menu.setMnemonic(KeyEvent.VK_A);  // alt short-cut key
 		menuBar.add(menu);  // the menu-bar adds this menu
@@ -115,7 +117,8 @@ public class MyFrame extends JFrame implements MouseListener {
 			}
 		});  
 
-		////////***********
+		//second menu
+		//add buttons
 		menu2 = new JMenu("Game");
 		menu2.setMnemonic(KeyEvent.VK_A);  // alt short-cut key
 		menuBar.add(menu2);  // the menu-bar adds this menu
@@ -170,7 +173,7 @@ public class MyFrame extends JFrame implements MouseListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				isGamer = 9;
-
+				paintElement();
 			}});
 
 
@@ -194,6 +197,7 @@ public class MyFrame extends JFrame implements MouseListener {
 		//	The method getGraphics is called to obtain a Graphics object
 		_paper = _panel.getGraphics();
 
+		//paint packmen
 		if(isGamer==1){
 			Packmen p = new Packmen(x,y);
 			p.setId(counter);
@@ -209,6 +213,7 @@ public class MyFrame extends JFrame implements MouseListener {
 
 			} }
 
+		//paint fruit
 		if(isGamer==2){ 
 			Fruit f = new Fruit(x,y);
 			f.setId(counter2);
@@ -224,6 +229,7 @@ public class MyFrame extends JFrame implements MouseListener {
 
 			}}
 
+		//start the game
 		if(isGamer==3){ 
 
 			ArrayList<Fruit> it1 = game.fruit_list;
@@ -262,6 +268,7 @@ public class MyFrame extends JFrame implements MouseListener {
 			}
 		}
 
+		//paint the paths
 		if(isGamer==4) {
 			ShortestPathAlgo sp =new ShortestPathAlgo(this.game);
 			Iterator<Path> it_path = sp.AllPath.iterator();
@@ -277,6 +284,7 @@ public class MyFrame extends JFrame implements MouseListener {
 					}}
 			}}
 
+		//reading from CSV file and paint the information on the map
 		if(isGamer==5) {
 
 			JButton open = new JButton();
@@ -295,6 +303,7 @@ public class MyFrame extends JFrame implements MouseListener {
 				ArrayList<Fruit> it1 = game.fruit_list;
 				fruits=game1.fruit_list2;
 
+				//paint the fruits
 				Iterator<Fruit> fruit = it1.iterator();
 				while(fruit.hasNext()) {
 					Fruit f = fruit.next();
@@ -303,6 +312,7 @@ public class MyFrame extends JFrame implements MouseListener {
 					_paper.setFont(new Font("Monospaced", Font.PLAIN, 14));               
 
 				}
+				//paint the packmens
 				Iterator<Packmen>it2 = game.packmen_list.iterator();
 
 				while (it2.hasNext() ) {
@@ -313,6 +323,7 @@ public class MyFrame extends JFrame implements MouseListener {
 
 				}
 
+				//paint the ghosts
 				Iterator<Ghost>it3 = game.ghost_list.iterator();
 				while (it3.hasNext() ) {
 					Ghost g = it3.next();
@@ -322,6 +333,7 @@ public class MyFrame extends JFrame implements MouseListener {
 
 				}
 
+				//paint the boxes
 				Iterator<GIS.Box>it4 = game.box_list.iterator();
 				while (it4.hasNext() ) {
 					GIS.Box b = it4.next();
@@ -330,6 +342,7 @@ public class MyFrame extends JFrame implements MouseListener {
 					double width = Math.abs(b.up.x() - left_up.x());
 					double height = Math.abs(left_up.y() - b.down.y());
 
+					//paint the player
 					_paper.setColor(Color.black);
 					_paper.fillRect((int)left_up.x(), (int)left_up.y(), (int)width, (int)height);
 					_paper.setFont(new Font("Monospaced", Font.PLAIN, 14));
@@ -339,11 +352,13 @@ public class MyFrame extends JFrame implements MouseListener {
 
 		}
 
+		//save the data to CSV file
 		if(isGamer==6) {
 
 			game.write2csv(game);
 		}
 
+		//paint the player
 		if(isGamer==7) {
 
 			_paper.setColor(Color.PINK);
@@ -359,11 +374,31 @@ public class MyFrame extends JFrame implements MouseListener {
 			player.setPlayer_location(point_gps);		
 
 		}
-	}
+		
+		//start the automatically algorithm
+		if(isGamer==9) {	
+
+			while(!game.fruit_list.isEmpty()) {
+			this.algo = new Algo(this.game);
+
+			for(int i = 0; i<algo.getList_edge().size(); i++) {
+				_paper.setColor(Color.GREEN);
+				_paper.drawLine((int)algo.getList_edge().get(i).getLine().getPoint1().x(),
+						(int)algo.getList_edge().get(i).getLine().getPoint1().y(),
+						(int)algo.getList_edge().get(i).getLine().getPoint2().x(),
+						(int)algo.getList_edge().get(i).getLine().getPoint2().y());              
+
+			}
+			_paper.setColor(Color.PINK);
+			_paper.fillOval((int)game.player.getPlayer_location().x(),(int)game.player.getPlayer_location().y(),40,40);
+			_paper.setFont(new Font("Monospaced", Font.PLAIN, 14));
+			}
+		}}
 
 	@Override
 	public void mousePressed(MouseEvent event) {
 
+		//save the point in packmens location
 		if(isGamer==1) {
 			x = event.getX();
 			y = event.getY();
@@ -373,6 +408,8 @@ public class MyFrame extends JFrame implements MouseListener {
 
 			paintElement();
 		}
+		
+		//save the point in fruits location
 		if(isGamer==2) {
 			x = event.getX();
 			y = event.getY();
@@ -384,6 +421,7 @@ public class MyFrame extends JFrame implements MouseListener {
 
 		}
 
+		//save the point in players location
 		if(isGamer==7) {
 
 			x = event.getX();
@@ -404,6 +442,7 @@ public class MyFrame extends JFrame implements MouseListener {
 			paintElement();	
 		}
 
+		// start the manually game
 		if(isGamer==8) {
 			this.play.setIDs(205443583, 312502537);
 			play.start();
@@ -437,36 +476,10 @@ public class MyFrame extends JFrame implements MouseListener {
 
 		}}
 
-	//	public void startGame() {
-	//
-	//		isGamer = 8;
-	//		this.play.setIDs(000);
-	//		
-	//		this.play.setInitLocation(player.getPlayer_location().x(), player.getPlayer_location().y());
-	//		this.play.start();
-	//
-	//		Thread thread = new Thread() {
-	//			public void run() {
-	//				while(play.isRuning()) {
-	//					game = new Game(play.getBoard());
-	//					play.rotate(angle);
-	//					paintElement();
-	//					try {
-	//						
-	//						Thread.sleep(200);
-	//						paintElement();
-	//					}
-	//					catch(Exception e) {
-	//
-	//					}
-	//				}
-	//			}
-	//		};
-	//		thread.start();
-	//
-	//	}
 
 	@Override
+	
+	//paint the new information on the map
 	public void paint(Graphics arg0) {
 
 		super.paint(arg0);
@@ -512,11 +525,11 @@ public class MyFrame extends JFrame implements MouseListener {
 			_paper.fillRect((int)left_up.x(), (int)left_up.y(), (int)width, (int)height);
 			_paper.setFont(new Font("Monospaced", Font.PLAIN, 14));
 		}
-		
+
 		if(isGamer == 8) {
-		_paper.setColor(Color.PINK);
-		_paper.fillOval((int)game.player.getPlayer_location().x(),(int)game.player.getPlayer_location().y(),40,40);
-		_paper.setFont(new Font("Monospaced", Font.PLAIN, 14));
+			_paper.setColor(Color.PINK);
+			_paper.fillOval((int)game.player.getPlayer_location().x(),(int)game.player.getPlayer_location().y(),40,40);
+			_paper.setFont(new Font("Monospaced", Font.PLAIN, 14));
 		}
 	}
 
@@ -528,6 +541,7 @@ public class MyFrame extends JFrame implements MouseListener {
 
 	public class myThread extends Thread{
 
+		//thread which move the each packmen to its closet fruit
 		MyFrame mf = new MyFrame();
 		ArrayList<Fruit> p = new ArrayList() ;
 		Packmen packmen;
@@ -539,6 +553,8 @@ public class MyFrame extends JFrame implements MouseListener {
 		}
 
 		@Override
+		
+		//start thread
 		public void run() {
 			for(int i = 0; i<p.size(); i++) {
 				packmen.setPac_place(p.get(i).getPoint3D());
