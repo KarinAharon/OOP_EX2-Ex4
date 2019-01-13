@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import Geom.Geom_element;
 import Geom.Point3D;
 
-public class Packmen implements GIS_element {
+public class Packmen {
 	
 	/**
 	 * the variables of the class
@@ -119,23 +119,6 @@ public Packmen () {
 				+"Alt: "+this.pack_place.z()+","
 				+"Speed: "+this.speed+","
 				+"Raduios: "+this.radius+"\n";
-	}
-
-	@Override
-	public Geom_element getGeom() {
-		return pack_place;
-	}
-
-	@Override
-	public Meta_data getData() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void translate(Point3D vec) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

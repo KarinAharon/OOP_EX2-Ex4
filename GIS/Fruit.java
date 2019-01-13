@@ -8,7 +8,7 @@ import Geom.Point3D;
  * @author Mor Danino and Karin Aharon
  *
  */
-public class Fruit implements GIS_element{
+public class Fruit {
 	/**
 	 * the variables of the class
 	 */
@@ -101,23 +101,20 @@ public class Fruit implements GIS_element{
 	/**
 	 * getter of fruit location
 	 */
-	@Override
-	public Geom_element getGeom() {
 
-		return f_place;
-	}
 	public Point3D getPoint3D() {
 		return f_place;
 
 	}
-	@Override
-	public Meta_data getData() {
-		return null;
-	}
 
-	@Override
-	public void translate(Point3D vec) {
-		// TODO Auto-generated method stub
-
+	/**
+	 * copy constructor
+	 * @param f any fruit
+	 */
+	public Fruit(Fruit f) {
+		this.f_place = f.f_place;
+		this.weight = f.weight;
+		this.id = f.id;
+		this.type = f.type;	
 	}
 }
